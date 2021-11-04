@@ -122,7 +122,7 @@ router.post("/payment", function (request, response) {
         response.render("main/paymentOk", data);
       }
       var order = new Order({
-        user: 'kevin',
+        user: user,
         cart: Cart,
         address: User.address,
         name: User.lastname,
