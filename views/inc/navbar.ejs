@@ -1,0 +1,98 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Mon Ecommerce</a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav m-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Catégories
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <% for(var i = 0;i< categories.length; i++){%>
+            <li>
+              <a class="dropdown-item" href="/products/<%= categories[i]._id %>"
+                ><%= categories[i].name %></a
+              >
+            </li>
+            <%}%>
+          </ul>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+        <% if(!user) { %>
+
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Incription / Connexion
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/signup">S'inscrire</a></li>
+            <li><a class="dropdown-item" href="/login">Se connecter</a></li>
+          </ul>
+        </li>
+
+        <% } %> <%if(user){%>
+        <li class="nav-item my-auto">
+          <a href="/cart"
+            ><i class="fas fa-shopping-cart"></i
+            ><span class="badge badge-secondary"><%= cart %></span></a
+          >
+        </li>
+        <% } else { %>
+        <li class="nav-item my-auto">
+          <a href="/cart"
+            ><i class="fas fa-shopping-cart"></i
+            ><span class="badge badge-secondary">0</span></a
+          >
+        </li>
+        <% } %> <% if(user) { %>
+
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <%= user.profile.lastname %> <%= user.profile.firstname %>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/profile">Profil</a></li>
+            <li><a class="dropdown-item" href="/logout">Deconnexion</a></li>
+          </ul>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>

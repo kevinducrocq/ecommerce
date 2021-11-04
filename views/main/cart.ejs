@@ -1,0 +1,203 @@
+<%- include('../layout.ejs'); %>
+
+<div class="container mt-5">
+  <h1>Mon panier</h1>
+
+  <% if(foundCart.total === 0){%>
+
+  <h2 class="alert alert-warning">Votre panier est vide !</h2>
+
+  <a href="/" class="btn btn-dark">Retour à la boutique</a>
+
+  <% } %>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <% if(message.length > 0 ){ %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= message %>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+    <% } %>
+
+    <!--Boucle pour afficher les produits ajoutés au panier-->
+    <% for (var i = 0 ; i < foundCart.items.length; i++) { %>
+    <div class="list-group">
+      <span class="list-group-item">
+        <div class="row">
+          <div class="col-md-3">
+            <span
+              ><img
+                src="<%=foundCart.items[i].item.image %>"
+                class="img-fluid"
+                alt="<%= foundCart.items[i].item.name %>"
+            /></span>
+          </div>
+
+          <div class="col-md-6">
+            <p class="list-group-item-heading">
+              <%=foundCart.items[i].item.name %>
+            </p>
+            <p>Prix unitaire: <%=foundCart.items[i].item.price %> €</p>
+          </div>
+
+          <div class="col-md-3">
+            <p><%=foundCart.items[i].quantity %> qtés</p>
+            <p>Total : <%=foundCart.items[i].price %> €</p>
+
+            <form action="/remove" method="post">
+              <input
+                type="hidden"
+                name="item"
+                value="<%=foundCart.items[i]._id %>"
+              />
+              <input
+                type="hidden"
+                name="price"
+                value="<%=foundCart.items[i].price %>"
+              />
+              <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+          </div>
+        </div>
+      </span>
+    </div>
+    <% } %>
+  </div>
+
+  <div class="col-md-3 mt-2">
+    <div class="list-group">
+      <span class="list-group-item">
+        <h4>
+          Total : <span class="totalPrice"><%=foundCart.total %> &euro;</span>
+        </h4>
+        <div class="form-group">
+          <button
+            type="submit"
+            class="btn btn-info"
+            data-bs-toggle="modal"
+            data-bs-target="#stripeModal"
+          >
+            Payer avec Stripe
+          </button>
+        </div>
+      </span>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="stripeModal"
+    tabindex="-1"
+    aria-labelledby="stripeModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="stripeModalLabel">Paiement</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          
+          <form
+            accept-charset="UTF-8"
+            action="/payment"
+            id="payment-form"
+            method="post"
+          >
+            <input
+              type="hidden"
+              value="<%=foundCart.total %>"
+              name="stripeMoney"
+            />
+
+            <!-- <div class="mt-2">
+              <div class="form-group required">
+                <label class="form-label">Nom complet</label>
+                <input class="form-control" type="text" />
+              </div>
+            </div> -->
+            <div class="mt-2">
+              <div class="form-group required">
+                <label class="form-label">N° de la carte</label>
+                <input
+                  autocomplete="off"
+                  class="form-control card-number"
+                  type="text"
+                  id="card-number"
+                />
+              </div>
+            </div>
+
+            <div class="row mt-2 mb-2">
+              <div class="col required">
+                <label class="form-label">CVC</label>
+                <input
+                  autocomplete="off"
+                  class="form-control"
+                  placeholder="ex: 311"
+                  type="text"
+                  id="card-cvc"
+                />
+              </div>
+
+              <div class="col expiration required">
+                <label class="form-label">Expiration</label>
+                <input
+                  class="form-control card-expiry-month"
+                  placeholder="MM"
+                  type="text"
+                  id="exp_month"
+                />
+              </div>
+
+              <div class="col expiration required">
+                <label class="form-label"> </label>
+                <input
+                  class="form-control"
+                  placeholder="AAAA"
+                  type="text"
+                  id="exp_year"
+                />
+              </div>
+            </div>
+
+            <div class="">
+              <div class="col-md-12">
+                <div class="form-control total btn btn-info">
+                  Total: <%=foundCart.total %> &euro;
+                  <span class="amount"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row mt-2">
+              <div id="payment-errors"></div>
+              <div class="col-md-12 form-group">
+                <button
+                  class="form-control btn btn-primary submit-button"
+                  type="submit"
+                  id="submit-button"
+                >
+                  Payer »
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

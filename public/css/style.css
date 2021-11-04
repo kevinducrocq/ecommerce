@@ -1,0 +1,22 @@
+.thumbnail {
+  border-radius: 3%;
+  padding: 0 1%;
+}
+
+figure {
+  position: relative;
+}
+
+figcaption {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  color: #f1f1f1;
+  width: 98%;
+  text-align: center;
+  border-radius: 3%;
+}
+
+figcaption h3 {
+  text-shadow: 0px 0px 1px #fff;
+}
